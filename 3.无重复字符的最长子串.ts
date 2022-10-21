@@ -12,23 +12,22 @@ type TMap = {
   [key: string]: number
 }
 function lengthOfLongestSubstring(s: string): number {
-  const cMap: TMap = {}
-  let maxSize = 0
-  let p1 = 0 // 头指针
-  let p2 = 0 // 尾指针
-  while (p2 < s.length) {
-    const char = s[p2]
-    if (Object.keys(cMap).includes(char)) {
-      // 表中找到了char 重置头指针
-      p1 = Math.max(cMap[char], p1)
-    }
-    // 保存到哈希表中: [p1,p2+1]字符串不存在重复字符
-    cMap[char] = p2 + 1
-    // 若当前子串更长 则更新maxSize
-    maxSize = Math.max(maxSize, p2 - p1 + 1)
-    // 尾指针始终向后移动
-    p2++
+  // 初始化last数组 记录字符上一次出现的位置
+  // 初始化为-1: 默认该字符未出现过
+  const last: number[] = new Array(128).fill(-1)
+  const n = s.length
+
+  let res = 0
+  let start = 0
+  for (let i = 0; i < n; i++) {
+    const index: number = s.charCodeAt(i) // 字符串 => ASCII
+    start = Math.max(last[index] + 1, start) // start移动到上一次该字符出现的位置的下一个位置
+    res = Math.max(i - start + 1, res)
+    last[index] = i // 记录字符最后出现的位置
   }
-  return maxSize
+
+  return res
 }
 // @lc code=end
+
+console.log(lengthOfLongestSubstring('abcabcbb'))
