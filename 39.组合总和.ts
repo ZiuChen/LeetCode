@@ -6,36 +6,41 @@
 
 // @lc code=start
 function combinationSum(candidates: number[], target: number): number[][] {
-  // 回溯算法(不剪枝)
-  // 1.一条路扎到底 2.回退一步 3.另寻他路
-  // 从大数开始 由大到小减扣输入的其他数
   const res: number[][] = []
-  // 递归函数
-  const dfs = (target: number, combine: number[], index: number) => {
-    // console.log(target, combine, index)
-    if (index === candidates.length) {
+
+  /**
+   * 回溯函数
+   * @description 剪枝的关键: 每次递归遍历的是同一个candidates 那么startIndex可以在同一个数组内指定 不断向后移动
+   * @param combinate 当前组合
+   * @param sumVal 当前组合的和值
+   * @param startIndex 起始检索位置(动态指定以剪枝)
+   * @returns
+   */
+  const backTracking = (combinate: number[], sumVal: number, startIndex: number) => {
+    // 满足跳出递归条件
+    if (sumVal === target) {
+      // 将当前组合加入到结果中
+      // 注意 此处应当为深拷贝 且调用of方法 否则new Array(7)产生歧义
+      res.push(Array.of(...combinate))
       return
     }
-    // 要找的目标值为0 直接返回空组合
-    if (target === 0) {
-      res.push(combine)
-      return
-    }
-    // 一头扎到底 index一直加到length
-    dfs(target, combine, index + 1)
-    // 目标值还有可以减扣的余地
-    if (target - candidates[index] >= 0) {
-      // 传入更新后的目标值与组合 重新调用
-      dfs(target - candidates[index], [...combine, candidates[index]], index)
+
+    for (let i = startIndex; i < candidates.length; i++) {
+      if (sumVal + candidates[i] <= target) {
+        // 当前值相加后 仍未得到目标结果 将当前数更新到组合中
+        combinate.push(candidates[i])
+        backTracking(combinate, sumVal + candidates[i], i) // 继续递归调用 直至找到目标结果返回
+        combinate.pop() // 找到目标结果 递归调用返回时 将组合顶部的元素弹出 即: 回溯到上一步
+      }
     }
   }
 
-  dfs(target, [], 0)
+  backTracking([], 0, 0)
 
   return res
 }
 // @lc code=end
 
-console.log(combinationSum([2, 3, 6, 7], 7))
+// console.log(combinationSum([2, 3, 6, 7], 7))
 // console.log(combinationSum([2, 3, 5], 8))
 // console.log(combinationSum([2], 1))
