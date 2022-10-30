@@ -6,20 +6,19 @@
 
 // @lc code=start
 function uniquePaths(m: number, n: number): number {
-  const dp: number[] = []
+  // 数论解法:
+  // 机器人必然走(m+n-2)步 从这些步中选(m-1)步向下走即可
 
-  // 优化空间复杂度: 用滚动的一维数组 保存到达当前行不同列的总路径数
-  // 初始化一维数组 模拟第一行(dp[i][0])全为1
-  for (let i = 0; i < n; i++) dp[i] = 1
+  let fenzi = 1
+  let fenmu = 1
 
-  for (let j = 1; j < m; j++) {
-    for (let i = 1; i < n; i++) {
-      dp[i] += dp[i - 1]
-    }
-  }
+  let count = m - 1
+  let t = m + n - 2
 
-  // 返回当前一维数组最末一个元素 即为到达右下角的路径数
-  return dp[n - 1]
+  while (count--) fenzi *= t-- // 计算分子 有溢出风险
+  for (let i = 1; i <= m - 1; i++) fenmu *= i // 计算分母
+
+  return fenzi / fenmu
 }
 // @lc code=end
 
