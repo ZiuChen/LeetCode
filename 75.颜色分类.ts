@@ -9,16 +9,33 @@
  Do not return anything, modify nums in-place instead.
  */
 function sortColors(nums: number[]): void {
-  // 直接升序排序
+  let ptr = 0 // 指向 头部 的范围
+
+  // 将所有的0交换到数组头部
   for (let i = 0; i < nums.length; i++) {
-    for (let j = i + 1; j < nums.length; j++) {
-      if (nums[j] < nums[i]) {
-        const tmp = nums[i]
-        nums[i] = nums[j]
-        nums[j] = tmp
-      }
+    if (nums[i] === 0) {
+      // 交换nums[i]与nums[ptr]
+      const tmp = nums[ptr]
+      nums[ptr] = nums[i]
+      nums[i] = tmp
+      // 指针后移
+      ptr++
     }
   }
+
+  // 将所有的1交换到0之后
+  for (let i = ptr; i < nums.length; ++i) {
+    if (nums[i] == 1) {
+      const tmp = nums[ptr]
+      nums[ptr] = nums[i]
+      nums[i] = tmp
+      ptr++
+    }
+  }
+
+  // 如此操作 剩余的2自然被移动到了数组末
+  // 时间复杂度O(n)
+
   // console.log(nums)
 }
 // @lc code=end
