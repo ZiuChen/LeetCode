@@ -9,34 +9,41 @@
  Do not return anything, modify nums in-place instead.
  */
 function sortColors(nums: number[]): void {
-  let ptr = 0 // 指向 头部 的范围
-
-  // 将所有的0交换到数组头部
-  for (let i = 0; i < nums.length; i++) {
-    if (nums[i] === 0) {
-      // 交换nums[i]与nums[ptr]
-      const tmp = nums[ptr]
-      nums[ptr] = nums[i]
-      nums[i] = tmp
-      // 指针后移
-      ptr++
-    }
-  }
-
-  // 将所有的1交换到0之后
-  for (let i = ptr; i < nums.length; ++i) {
+  // 只遍历一次 双指针
+  let n = nums.length
+  // 用p0交换0 用p1交换1
+  // p0始终指向最后一个0后面的元素
+  // p1始终指向最后一个1后面的元素
+  let p0 = 0,
+    p1 = 0
+  for (let i = 0; i < n; ++i) {
     if (nums[i] == 1) {
-      const tmp = nums[ptr]
-      nums[ptr] = nums[i]
-      nums[i] = tmp
-      ptr++
+      // 交换1
+      // 交换nums[i]与nums[p1]
+      let temp = nums[i]
+      nums[i] = nums[p1]
+      nums[p1] = temp
+      ++p1 // 用来交换0的指针p1后移
+    } else if (nums[i] == 0) {
+      // 交换0
+      // 交换nums[i]与nums[p0]
+      let temp = nums[i]
+      nums[i] = nums[p0]
+      nums[p0] = temp
+
+      // 交换0时 可能会将1交换出去
+      // 在交换后 把这个换出去的元素放到0序列的后面
+      if (p0 < p1) {
+        // 交换nums[i]与nums[p1]
+        temp = nums[i]
+        nums[i] = nums[p1]
+        nums[p1] = temp
+      }
+      // p0和p1都要向后移动
+      ++p0
+      ++p1
     }
   }
-
-  // 如此操作 剩余的2自然被移动到了数组末
-  // 时间复杂度O(n)
-
-  // console.log(nums)
 }
 // @lc code=end
 
