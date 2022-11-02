@@ -22,8 +22,8 @@ function combine(n: number, k: number): number[][] {
       res.push([...combine]) // 解构深拷贝
       return
     }
-    // 从上次遍历的结果开始 遍历至目标值n
-    for (let i = startIndex; i <= n; i++) {
+    // 如果起始位置之后的元素个数已经不满足k 则不必搜索
+    for (let i = startIndex; i <= n - (k - combine.length) + 1; i++) {
       // 将值加入到当前组合中
       combine.push(i)
       // 递归调用回溯函数
