@@ -5,45 +5,42 @@
  */
 
 // @lc code=start
-interface ICMap {
-  [key: string]: string
-}
-
 function letterCombinations(digits: string): string[] {
   if (digits.length === 0) return []
-  const cMap: ICMap = {
-    '2': 'abc',
-    '3': 'def',
-    '4': 'ghi',
-    '5': 'jkl',
-    '6': 'mno',
-    '7': 'pqrs',
-    '8': 'tuv',
-    '9': 'wxyz'
-  }
+
   const res: string[] = []
-  for (let i = 0; i < digits.length; i++) {
-    const c = digits[i]
-    const str = cMap[c]
-    if (res.length === 0) {
-      // 当前res为空 证明未执行过插入组合
-      for (let j = 0; j < str.length; j++) {
-        // 将cMap所有对应值拆开插入
-        res.push(str[j])
-      }
-    } else {
-      const temp: string[] = []
-      for (let j = 0; j < str.length; j++) {
-        for (let k = 0; k < res.length; k++) {
-          // 创建临时新数组 生成新组合
-          temp.push(res[k] + str[j])
-        }
-      }
-      // 将生成的新组合替换掉之前位置的字符串组合
-      res.splice(0, res.length, ...temp)
+  let str = ''
+  const charMap = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz']
+
+  /**
+   * 回溯算法
+   * @param digits 原始数字字符串
+   * @param index 当前遍历的数字字符串索引值
+   * @returns void
+   */
+  const backTracing = (digits: string, index: number) => {
+    // 递归中止条件
+    if (index === digits.length) {
+      res.push(str)
+      return
+    }
+
+    // 将字符串转为整型
+    const digist = parseInt(digits[index])
+    // 获得该数字对应的字母集
+    const letters = charMap[digist]
+    // for循环遍历 处理字母集中每个字母
+    for (let i = 0; i < letters.length; i++) {
+      // 将当前数字对应的字母加入到组合中
+      str += letters[i]
+      // 递归调用 将index后移 处理后一个数字
+      backTracing(digits, index + 1)
+      // 递归调用返回 回溯
+      str = str.slice(0, str.length - 1)
     }
   }
 
+  backTracing(digits, 0)
   return res
 }
 // @lc code=end
