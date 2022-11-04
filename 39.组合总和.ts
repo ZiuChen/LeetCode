@@ -20,11 +20,11 @@ function combinationSum(candidates: number[], target: number): number[][] {
     // 满足跳出递归条件
     if (sumVal === target) {
       // 将当前组合加入到结果中
-      // 注意 此处应当为深拷贝 且调用of方法 否则new Array(7)产生歧义
-      res.push(Array.of(...combinate))
+      res.push([...combinate])
       return
     }
 
+    // 从上次遍历结束的位置开始 遍历整个candidates
     for (let i = startIndex; i < candidates.length; i++) {
       if (sumVal + candidates[i] <= target) {
         // 当前值相加后 仍未得到目标结果 将当前数更新到组合中
