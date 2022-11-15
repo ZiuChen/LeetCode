@@ -20,25 +20,27 @@ class TreeNode {
 
 function inorderTraversal(root: TreeNode | null): number[] {
   const res: number[] = []
+  const stack: TreeNode[] = []
 
-  // 递归 中序遍历
-  const inorder = (root: TreeNode | null) => {
-    // root值为null 证明已经递归到叶节点 函数返回
-    if (!root) {
-      return
+  // 显式地维护一个栈
+  while (root || stack.length) {
+    // 当前root有值 则向左递归 将所有左节点入栈
+    while (root) {
+      stack.push(root)
+      root = root.left
     }
 
-    // root有值 传入左节点 向左递归
-    inorder(root.left)
+    // 左节点全部入栈完毕
+    // 回退状态 栈顶元素出栈 因为此时root==null,  root.left一定为null
+    // 执行下一次外层while 根出栈 此时root.right可能存在
+    root = stack.pop()!
 
-    // 递归返回 将当前节点值加入到结果中
+    // 将栈顶元素存入res
     res.push(root.val)
 
-    // 保存完当前节点 向右递归
-    inorder(root.right)
+    // 赋值为右节点 继续查找
+    root = root.right
   }
-
-  inorder(root)
   return res
 }
 // @lc code=end
