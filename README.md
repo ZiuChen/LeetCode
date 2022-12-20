@@ -52,3 +52,26 @@ function search(nums: number[], target: number): number {
   return -1
 }
 ```
+
+### 27. 移除元素
+
+- 双指针法：定义快指针/慢指针
+- 快指针：负责向后搜索值不为`val`的新数组
+- 慢指针：负责记录新数组的长度
+
+#### 正确答案
+
+```ts
+function removeElement(nums: number[], val: number): number {
+  let slowIndex = 0 // 慢指针 代表新数组的长度
+
+  // 快指针 向后搜索不包含val的目标数组
+  for (let fastIndex = 0; fastIndex < nums.length; fastIndex++) {
+    if (nums[fastIndex] !== val) {
+      slowIndex++
+    }
+  }
+
+  return slowIndex
+}
+```
