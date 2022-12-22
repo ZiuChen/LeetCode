@@ -1,5 +1,14 @@
 # Leetcode 解题笔记
 
+## 时间复杂度
+
+![time-complexity-examples.png](https://adrianmejia.com/images/time-complexity-examples.png)
+
+- `O(1)`: 常数复杂度，比如计算两次即可得出最终结论
+- `O(logn)`: 对数复杂度，最常见的是二分查找
+- `O(n)`: 线性复杂度，一般为一个 for 循环，但半个或者两个 for 循环也视作 O(n)
+- `O(n^2)`: 一般为嵌套的 for 循环，如冒泡排序
+
 ## 数组
 
 ### 2. 二分查找
@@ -75,3 +84,7 @@ function removeElement(nums: number[], val: number): number {
   return slowIndex
 }
 ```
+
+## 相关题目
+
+
