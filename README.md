@@ -85,6 +85,44 @@ function removeElement(nums: number[], val: number): number {
 }
 ```
 
+### 977. 有序数组的平方
+
+- 双指针法：定义左指针/右指针
+- 负数的平方可能会大于右边的最大值
+- 由于经过平方的数一定是大于0的，所以最大值要么是最左边的、要么是最右边的
+- 定义三个指针`i j k`分别指向原数组左端、原数组右端、新数组右端
+- 检查`nums[i] nums[j]`的平方大小并赋值到新数组右端`res[k]`
+
+#### 正确答案
+
+```ts
+function sortedSquares(nums: number[]): number[] {
+  const len = nums.length
+  const res = new Array(len).fill(0)
+
+  // 双指针
+  let i = 0 // 左指针
+  let j = len - 1 // 右指针
+  let k = len - 1 // 新数组末尾指针
+
+  while (i <= j) {
+    const leftVal = Math.pow(nums[i], 2)
+    const rightVal = Math.pow(nums[j], 2)
+
+    if (leftVal > rightVal) {
+      // 左边值更大
+      res[k--] = leftVal
+      i++ // 左指针右移
+    } else {
+      res[k--] = rightVal
+      j-- // 右指针左移
+    }
+  }
+
+  return res
+}
+```
+
 ## 相关题目
 
 
