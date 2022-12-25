@@ -67,9 +67,9 @@ function search(nums: number[], target: number): number {
   let left = 0
   let right = nums.length - 1
 
-  while (left < right) {
+  while (left <= right) {
     const mid = Math.floor(left + (right - left) / 2)
-    console.log(left, right, mid)
+
     if (nums[mid] === target) {
       return mid
     } else if (nums[mid] > target) {
@@ -179,4 +179,69 @@ function sortedSquares(nums: number[]): number[] {
 
 ## 相关题目
 
+### 35. 搜索插入位置
 
+#### 题目描述
+
+给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+
+请必须使用时间复杂度为 `O(log n)` 的算法。
+
+示例 1:
+
+```
+输入: nums = [1,3,5,6], target = 5
+输出: 2
+```
+
+示例 2:
+
+```
+输入: nums = [1,3,5,6], target = 2
+输出: 1
+```
+
+示例 3:
+
+```
+输入: nums = [1,3,5,6], target = 7
+输出: 4
+```
+
+#### 解题思路
+
+- 排序树组+无重复元素+O(logn) 考虑使用二分法
+- 定义两个指针 指向左右两边
+- 使用`while(left <= right)`循环 每次循环求`mid`
+- 如果找到了则直接返回下标`mid`
+- 如果没找到，此时`left == right == mid`即为数组应当插入的位置
+
+#### 正确答案
+
+```ts
+function searchInsert(nums: number[], target: number): number {
+  // 1.排序数组 2.无重复元素 3.Ologn 考虑使用二分法
+  const len = nums.length
+
+  let left = 0
+  let right = len - 1
+
+  while (left <= right) {
+    const mid = Math.floor(left + (right - left) / 2) // 防止溢出
+
+    if (target === nums[mid]) {
+      // 找到目标值
+      return mid
+    } else if (target > nums[mid]) {
+      // 在右侧
+      left = mid + 1
+    } else {
+      // 在左侧
+      right = mid - 1
+    }
+  }
+
+  // 未找到目标值
+  return left
+}
+```

@@ -6,27 +6,31 @@
 
 // @lc code=start
 function searchInsert(nums: number[], target: number): number {
-  if (nums[0] > target) {
-    // 最小值大于目标值
-    return 0
-  } else if (nums[nums.length - 1] < target) {
-    // 最大值小于目标值
-    return nums.length
-  }
-  let start = 0 // 前指针
-  let end = nums.length - 1 // 后指针
-  while (start <= end) {
-    // 前后指针之间索引
-    const mid = Math.round((start + end) / 2)
-    if (nums[mid] === target) {
-      // 目标值存在于原数组中 直接返回索引
+  // 1.排序数组 2.无重复元素 3.Ologn 考虑使用二分法
+  const len = nums.length
+
+  let left = 0
+  let right = len - 1
+
+  while (left <= right) {
+    const mid = Math.floor(left + (right - left) / 2) // 防止溢出
+
+    if (target === nums[mid]) {
+      // 找到目标值
       return mid
-    } else if (nums[mid] < target) {
-      start = mid + 1 // 中间索引值更小 前指针后移
+    } else if (target > nums[mid]) {
+      // 在右侧
+      left = mid + 1
     } else {
-      end = mid - 1 // 中间索引值更大 后指针前移
+      // 在左侧
+      right = mid - 1
     }
   }
-  return start
+
+  // 未找到目标值
+  return left
 }
 // @lc code=end
+console.log(searchInsert([1, 3, 5, 6], 5))
+console.log(searchInsert([1, 3, 5, 6], 2))
+console.log(searchInsert([1, 3, 5, 6], 7))
