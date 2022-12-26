@@ -213,8 +213,14 @@ function sortedSquares(nums: number[]): number[] {
 - 排序树组+无重复元素+O(logn) 考虑使用二分法
 - 定义两个指针 指向左右两边
 - 使用`while(left <= right)`循环 每次循环求`mid`
-- 如果找到了则直接返回下标`mid`
-- 如果没找到，此时`left == right == mid`即为数组应当插入的位置
+- 结果分为四种情况：
+  - 如果找到了: 直接返回`mid`
+  - 如果没找到:
+    - 目标值在所有元素之前 [0, -1]
+    - 目标值插入数组中的位置 [left, right]
+    - 目标值在所有元素之后 [left, right]
+  - 结束最后一次循环后，`left = right + 1`
+  - 结果返回`left`或`right - 1`皆可
 
 #### 正确答案
 
