@@ -181,6 +181,8 @@ function sortedSquares(nums: number[]): number[] {
 
 #### 题目描述
 
+[LeetCode: 209.长度最小的子数组](https://leetcode.cn/problems/minimum-size-subarray-sum/)
+
 #### 暴力解法
 
 双for暴力解法，遍历所有子串并保留满足条件的最小子串长度
