@@ -177,6 +177,79 @@ function sortedSquares(nums: number[]): number[] {
 }
 ```
 
+### 209.长度最小的子数组
+
+#### 题目描述
+
+#### 暴力解法
+
+双for暴力解法，遍历所有子串并保留满足条件的最小子串长度
+
+时间复杂度O(n^2)：
+
+- n是数组长度 需要遍历每个下标作为子序列的开始下标
+- 对于每个开始下标 还需要遍历其后面的下标得到长度最小的子数组
+
+```ts
+function minSubArrayLen(target: number, nums: number[]): number {
+  // 双for暴力解法
+  let res = Infinity // 最终结果 初值目的是后续被更小的数赋值
+  let sum = 0 //
+  let subLen = 0
+  // i: 子序列起点 j: 子序列终点
+  for (let i = 0; i < nums.length; i++) {
+    // 开始外层循环 重置sum
+    sum = 0
+    for (let j = i; j < nums.length; j++) {
+      sum += nums[j] // 子序列求和
+      if (sum >= target) {
+        subLen = j - i + 1 // 当前子序列长度
+        res = res < subLen ? res : subLen // 取更小的长度
+        break // 跳出当前内层循环
+      }
+    }
+  }
+  // 若res未被赋值则返回0
+  return res === Infinity ? 0 : res
+}
+```
+
+#### 滑动窗口
+
+可以通过滑动窗口的方法降低时间复杂度（O(n^2) => O(n)）。滑动窗口本质是双指针，只不过解法更像是一个窗口的移动，用滑动窗口描述更贴切。
+
+双for嵌套的时间复杂度是O(n^2)，而滑动窗口方法只需要一次循环，在这一次循环中需要完成以下工作：
+
+- 窗口后置指针后移
+- 计算是否满足条件(sum <= target)
+- 若不满足 则直接让**窗口前置指针后移**（这是与双for本质的不同 减少了很多从头再来的重复操作）
+
+时间复杂度O(n)，其中n是数组长度，左右指针最多各移动n次：2n
+
+```ts
+function minSubArrayLen(target: number, nums: number[]): number {
+  // 滑动窗口 O(n^2) => O(n)
+  let res = Infinity // 最终结果
+  let i = 0 // 滑动窗口起始位置
+  let sum = 0 // 当前子序列之和
+  let subLen = 0 // 当前子序列长度
+
+  // 只遍历一次
+  for (let j = 0; j < nums.length; j++) {
+    sum += nums[j]
+    // 当满足条件时
+    while (sum >= target) {
+      subLen = j - i + 1 // 求当前子序列长度
+      res = res < subLen ? res : subLen // 比较并更新较短的子序列长度
+      sum -= nums[i++] // 滑动窗口起始位置向后移动 同时减掉前一个位置的数: (sum-=nums[i]; i++;)
+    }
+  }
+
+  return res === Infinity ? 0 : res
+}
+```
+
+
 ## 相关题目
 
 ### 35. 搜索插入位置
