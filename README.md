@@ -374,9 +374,76 @@ class ListNode {
 - 链表的长度是不固定的，并且可以动态增删，适合数据量不固定、频繁增删、较少查询的场景
 - 链表如果想要删除最后一个节点，需要从头节点查找到倒数第二个节点通过`next`指针进行删除操作，查找的时间复杂度是`O(n)`
 
+#### 工具函数
+
+编码时可能需要用到的工具函数：
+
+- 数组转链表
+- 链表转数组
+
+```ts
+function linknode(arr: number[]) {
+  let head = new ListNode(arr[0])
+  let cur = head
+  for (let i = 1; i < arr.length; i++) {
+    cur.next = new ListNode(arr[i])
+    cur = cur.next
+  }
+  return head
+}
+function print(head: ListNode | null) {
+  const res: number[] = []
+  let cur = head
+  while (cur) {
+    res.push(cur.val)
+    cur = cur.next
+  }
+  return res
+}
+```
+
 ### 203. 移除链表元素
 
+#### 题目描述
 
+[LeetCode](https://leetcode.cn/problems/remove-linked-list-elements/)
+
+#### 解题思路
+
+由于链表的特殊性，指向当前节点的指针只能删除下一个节点，也就是需要通过前一个节点来移除当前节点。
+
+如果需要删除的节点是头结点，这时就需要将头结点向后移动一位，这样就删除了头结点。
+
+这样的话在编写代码时就需要额外的逻辑来判断头结点是否需要删除，如果我们希望**通过统一的逻辑来移除链表节点**，可以定义一个虚拟头结点`dummy`，这样链表中所有元素都可以通过统一的方式进行移除了。
+
+#### 正确答案
+
+单独移除头结点：
+
+```ts
+while (head !== null && head.val === val) {
+  head = head.next;
+}
+```
+
+```ts
+function removeElements(head: ListNode | null, val: number): ListNode | null {
+  const dummy = new ListNode(0, head)
+  let cur = dummy
+  // 下一个节点不为null
+  while (cur.next !== null) {
+    // 下一个节点的值匹配
+    if (cur.next.val === val) {
+      // 将下一个节点删除
+      cur.next = cur.next.next
+    } else {
+      // 否则更新cur值 继续向下检查
+      cur = cur.next
+    }
+  }
+  return dummy.next
+}
+```
 
 ## 相关题目
 
