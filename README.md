@@ -251,6 +251,72 @@ function minSubArrayLen(target: number, nums: number[]): number {
 }
 ```
 
+### 59.螺旋矩阵
+
+#### 题目描述
+
+[LeetCode](https://leetcode.cn/problems/spiral-matrix-ii/)
+
+#### 解题思路
+
+本题并不涉及到什么算法，就是模拟过程，但却十分考察对代码的掌控能力。
+
+模拟顺时针画矩阵的过程:
+
+- 填充上行从左到右
+- 填充右列从上到下
+- 填充下行从右到左
+- 填充左列从下到上
+
+**必须要始终保证每条边左闭右开的原则**
+
+```ts
+function generateMatrix(n: number): number[][] {
+  // 按边循环填充 保持左闭右开原则
+  const res = new Array(n).fill(0).map((i) => new Array(n)) // 二维数组 保存最终结果
+  let startX = 0 // 每循环一圈的起始位置 X
+  let startY = 0 // 每循环一圈的起始位置 Y
+  let loop = Math.floor(n / 2) // 每个圈循环几次
+  let mid = Math.floor(n / 2) // 矩阵的中间位置
+  let count = 1 // 更新填充数字
+  let offset = 1 // 每一条边遍历的长度 每次循环右边界收缩一位
+
+  while (loop--) {
+    let row = startX
+    let col = startY
+    // 上行从左到右（左闭右开）
+    for (; col < startY + n - offset; col++) {
+      res[row][col] = count++
+    }
+    // 右列从上到下（左闭右开）
+    for (; row < startX + n - offset; row++) {
+      res[row][col] = count++
+    }
+    // 下行从右到左（左闭右开）
+    for (; col > startY; col--) {
+      res[row][col] = count++
+    }
+    // 左列做下到上（左闭右开）
+    for (; row > startX; row--) {
+      res[row][col] = count++
+    }
+
+    // 更新起始位置
+    startX++
+    startY++
+
+    // 更新offset
+    offset += 2
+  }
+
+  // 如果n为奇数的话，需要单独给矩阵最中间的位置赋值
+  if (n % 2 === 1) {
+    res[mid][mid] = count
+  }
+
+  return res
+}
+```
 
 ## 相关题目
 
